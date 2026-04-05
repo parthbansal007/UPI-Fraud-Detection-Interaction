@@ -1,0 +1,56 @@
+{
+  "fit_data": "train_only",
+  "split_shapes": {
+    "X_train": [
+      7000,
+      839
+    ],
+    "X_val": [
+      1500,
+      839
+    ],
+    "X_test": [
+      1500,
+      839
+    ]
+  },
+  "normalization": {
+    "method": "quantile_minmax",
+    "low_quantile": 0.05,
+    "high_quantile": 0.95,
+    "scale_low": -0.11080714896222615,
+    "scale_high": 0.06821070186869012,
+    "score_range_train": [
+      0.0,
+      1.0
+    ],
+    "score_range_val": [
+      0.0,
+      1.0
+    ],
+    "score_range_test": [
+      0.0,
+      1.0
+    ]
+  },
+  "artifact_paths": {
+    "isolation_forest_model": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\isolation_forest.joblib",
+    "anomaly_scores": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\isolation_forest_scores.csv",
+    "report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\isolation_forest_report.json",
+    "matrix_bundle": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\processed_matrices\\feature_matrices.npz"
+  },
+  "config": {
+    "matrix_dir": "outputs\\processed_matrices",
+    "data_dir": "interaction_data",
+    "transformer_dir": "models\\interaction\\transformer",
+    "output_model_path": "models\\interaction\\isolation_forest.joblib",
+    "output_scores_path": "outputs\\isolation_forest_scores.csv",
+    "output_report_path": "models\\interaction\\isolation_forest_report.json",
+    "random_state": 42,
+    "n_estimators": 300,
+    "contamination": 0.18,
+    "n_jobs": -1,
+    "normalize_low_quantile": 0.05,
+    "normalize_high_quantile": 0.95
+  }
+}

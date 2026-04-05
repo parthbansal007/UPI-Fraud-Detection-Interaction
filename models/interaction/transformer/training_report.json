@@ -1,0 +1,114 @@
+{
+  "class_order": [
+    "normal",
+    "suspicious",
+    "malicious"
+  ],
+  "label_to_id": {
+    "normal": 0,
+    "suspicious": 1,
+    "malicious": 2
+  },
+  "selected_backbone": "distilroberta-base",
+  "best_learning_rate": 2e-05,
+  "target_metric": "malicious_precision",
+  "class_weights": {
+    "normal": 1.0,
+    "suspicious": 2.0,
+    "malicious": 4.0
+  },
+  "split_sizes": {
+    "train": 7000,
+    "val": 1500,
+    "test_ood": 1500
+  },
+  "train_metrics": {
+    "accuracy": 0.7137142857142857,
+    "malicious_precision": 0.5938864628820961,
+    "malicious_recall": 0.7039337474120083,
+    "precision_by_class": {
+      "normal": 0.8234900824604413,
+      "suspicious": 0.45394736842105265,
+      "malicious": 0.5938864628820961
+    },
+    "recall_by_class": {
+      "normal": 0.8411108581834738,
+      "suspicious": 0.37842778793418647,
+      "malicious": 0.7039337474120083
+    },
+    "f1_by_class": {
+      "normal": 0.8322072072072072,
+      "suspicious": 0.4127617148554337,
+      "malicious": 0.6442444339175746
+    }
+  },
+  "val_metrics": {
+    "accuracy": 0.5726666666666667,
+    "malicious_precision": 0.4276923076923077,
+    "malicious_recall": 0.486013986013986,
+    "precision_by_class": {
+      "normal": 0.73568281938326,
+      "suspicious": 0.4433198380566802,
+      "malicious": 0.4276923076923077
+    },
+    "recall_by_class": {
+      "normal": 0.6816326530612244,
+      "suspicious": 0.4572025052192067,
+      "malicious": 0.486013986013986
+    },
+    "f1_by_class": {
+      "normal": 0.7076271186440678,
+      "suspicious": 0.4501541623843782,
+      "malicious": 0.45499181669394434
+    }
+  },
+  "test_ood_metrics": {
+    "accuracy": 0.6653333333333333,
+    "malicious_precision": 0.5316901408450704,
+    "malicious_recall": 0.6088709677419355,
+    "precision_by_class": {
+      "normal": 0.7981438515081206,
+      "suspicious": 0.4491525423728814,
+      "malicious": 0.5316901408450704
+    },
+    "recall_by_class": {
+      "normal": 0.7889908256880734,
+      "suspicious": 0.41842105263157897,
+      "malicious": 0.6088709677419355
+    },
+    "f1_by_class": {
+      "normal": 0.7935409457900807,
+      "suspicious": 0.4332425068119891,
+      "malicious": 0.5676691729323309
+    }
+  },
+  "artifact_paths": {
+    "model_dir": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\transformer",
+    "probability_scores": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\transformer_probability_scores.csv",
+    "training_report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\transformer\\training_report.json"
+  },
+  "config": {
+    "data_dir": "interaction_data",
+    "model_dir": "models\\interaction\\transformer",
+    "output_dir": "outputs",
+    "seed": 42,
+    "model_candidates": [
+      "distilroberta-base"
+    ],
+    "max_length": 96,
+    "train_batch_size": 8,
+    "eval_batch_size": 16,
+    "tokenization_batch_size": 256,
+    "epochs": 4.0,
+    "learning_rates": [
+      2e-05
+    ],
+    "weight_decay": 0.01,
+    "early_stopping_patience": 2,
+    "class_weights": [
+      1.0,
+      2.0,
+      4.0
+    ]
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "config": {
+    "seed": 42,
+    "raw_data_path": "interaction_data\\dataset_v2.csv",
+    "encoded_data_path": "interaction_data\\dataset_encoded_v2.csv",
+    "artifact_dir": "models\\interaction",
+    "transformer_model_name": "microsoft/deberta-v3-base",
+    "fallback_transformer_model_name": "distilbert-base-uncased",
+    "max_length": 96,
+    "train_batch_size": 16,
+    "eval_batch_size": 32,
+    "transformer_epochs": 4.0,
+    "transformer_learning_rates": [
+      3e-05
+    ],
+    "transformer_weight_decay": 0.01,
+    "transformer_patience": 2,
+    "xgb_param_grid": [
+      {
+        "max_depth": 4,
+        "learning_rate": 0.08,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9
+      }
+    ],
+    "xgb_estimators": 300,
+    "xgb_early_stopping_rounds": 50,
+    "iso_estimators": 300,
+    "iso_contamination": 0.1,
+    "min_malicious_recall": 0.3,
+    "ensemble_weights": [
+      0.35,
+      0.55,
+      0.1
+    ],
+    "onnx_opset": 17,
+    "onnx_vendor_paths": [
+      "C:/onnxlib"
+    ],
+    "latency_runs": 30,
+    "quick_mode": true
+  },
+  "transformer_model_used": "distilbert-base-uncased",
+  "class_order": [
+    "normal",
+    "suspicious",
+    "malicious"
+  ],
+  "thresholds": {
+    "malicious_threshold": 0.52,
+    "suspicious_threshold": 0.45
+  },
+  "validation_metrics": {
+    "accuracy": 0.6060100166944908,
+    "precision_by_class": {
+      "normal": 0.7596899224806202,
+      "suspicious": 0.44947735191637633,
+      "malicious": 0.7037037037037037
+    },
+    "recall_by_class": {
+      "normal": 0.6666666666666666,
+      "suspicious": 0.675392670157068,
+      "malicious": 0.3333333333333333
+    },
+    "f1_by_class": {
+      "normal": 0.7101449275362319,
+      "suspicious": 0.5397489539748954,
+      "malicious": 0.4523809523809524
+    },
+    "malicious_precision": 0.7037037037037037,
+    "malicious_recall": 0.3333333333333333,
+    "confusion_matrix": [
+      [
+        196,
+        93,
+        5
+      ],
+      [
+        51,
+        129,
+        11
+      ],
+      [
+        11,
+        65,
+        38
+      ]
+    ]
+  },
+  "test_ood_metrics": {
+    "accuracy": 0.66110183639399,
+    "precision_by_class": {
+      "normal": 0.7993827160493827,
+      "suspicious": 0.40414507772020725,
+      "malicious": 0.7195121951219512
+    },
+    "recall_by_class": {
+      "normal": 0.7442528735632183,
+      "suspicious": 0.5131578947368421,
+      "malicious": 0.5959595959595959
+    },
+    "f1_by_class": {
+      "normal": 0.7708333333333334,
+      "suspicious": 0.45217391304347826,
+      "malicious": 0.6519337016574586
+    },
+    "malicious_precision": 0.7195121951219512,
+    "malicious_recall": 0.5959595959595959,
+    "confusion_matrix": [
+      [
+        259,
+        83,
+        6
+      ],
+      [
+        57,
+        78,
+        17
+      ],
+      [
+        8,
+        32,
+        59
+      ]
+    ]
+  },
+  "latency": {
+    "onnx_exported": true,
+    "available": true,
+    "onnx_path": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\onnx\\transformer_classifier.onnx",
+    "avg_latency_ms": 39.590589998988435,
+    "target_met_lt_200ms": true
+  },
+  "artifact_paths": {
+    "artifact_dir": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction",
+    "example_predictions": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\example_predictions.csv",
+    "evaluation_report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\evaluation_report.json"
+  }
+}
