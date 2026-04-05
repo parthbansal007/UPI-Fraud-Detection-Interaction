@@ -56,7 +56,7 @@ Evaluate:
 ```bash
 python main.py evaluate --split test_ood --with-xai
 ```
-
+ 
 Single inference:
 
 ```bash
