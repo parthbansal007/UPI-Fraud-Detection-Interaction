@@ -6,10 +6,10 @@
     "artifact_dir": "models\\interaction",
     "transformer_model_name": "microsoft/deberta-v3-base",
     "fallback_transformer_model_name": "distilbert-base-uncased",
-    "max_length": 96,
-    "train_batch_size": 16,
-    "eval_batch_size": 32,
-    "transformer_epochs": 4.0,
+    "max_length": 64,
+    "train_batch_size": 2,
+    "eval_batch_size": 4,
+    "transformer_epochs": 0.1,
     "transformer_learning_rates": [
       3e-05
     ],
@@ -48,92 +48,90 @@
   ],
   "thresholds": {
     "malicious_threshold": 0.52,
-    "suspicious_threshold": 0.45
+    "suspicious_threshold": 0.3
   },
   "validation_metrics": {
-    "accuracy": 0.6060100166944908,
+    "accuracy": 0.5442404006677797,
     "precision_by_class": {
-      "normal": 0.7596899224806202,
-      "suspicious": 0.44947735191637633,
-      "malicious": 0.7037037037037037
+      "normal": 0.6320754716981132,
+      "suspicious": 0.416988416988417,
+      "malicious": 0.7727272727272727
     },
     "recall_by_class": {
-      "normal": 0.6666666666666666,
-      "suspicious": 0.675392670157068,
-      "malicious": 0.3333333333333333
+      "normal": 0.6836734693877551,
+      "suspicious": 0.5654450261780105,
+      "malicious": 0.14912280701754385
     },
     "f1_by_class": {
-      "normal": 0.7101449275362319,
-      "suspicious": 0.5397489539748954,
-      "malicious": 0.4523809523809524
+      "normal": 0.6568627450980392,
+      "suspicious": 0.48,
+      "malicious": 0.25
     },
-    "malicious_precision": 0.7037037037037037,
-    "malicious_recall": 0.3333333333333333,
+    "malicious_precision": 0.7727272727272727,
+    "malicious_recall": 0.14912280701754385,
     "confusion_matrix": [
       [
-        196,
-        93,
-        5
+        201,
+        92,
+        1
       ],
       [
-        51,
-        129,
-        11
+        79,
+        108,
+        4
       ],
       [
-        11,
-        65,
-        38
+        38,
+        59,
+        17
       ]
     ]
   },
   "test_ood_metrics": {
-    "accuracy": 0.66110183639399,
+    "accuracy": 0.6327212020033389,
     "precision_by_class": {
-      "normal": 0.7993827160493827,
-      "suspicious": 0.40414507772020725,
-      "malicious": 0.7195121951219512
+      "normal": 0.7341040462427746,
+      "suspicious": 0.41904761904761906,
+      "malicious": 0.8604651162790697
     },
     "recall_by_class": {
-      "normal": 0.7442528735632183,
-      "suspicious": 0.5131578947368421,
-      "malicious": 0.5959595959595959
+      "normal": 0.7298850574712644,
+      "suspicious": 0.5789473684210527,
+      "malicious": 0.37373737373737376
     },
     "f1_by_class": {
-      "normal": 0.7708333333333334,
-      "suspicious": 0.45217391304347826,
-      "malicious": 0.6519337016574586
+      "normal": 0.7319884726224783,
+      "suspicious": 0.4861878453038674,
+      "malicious": 0.5211267605633803
     },
-    "malicious_precision": 0.7195121951219512,
-    "malicious_recall": 0.5959595959595959,
+    "malicious_precision": 0.8604651162790697,
+    "malicious_recall": 0.37373737373737376,
     "confusion_matrix": [
       [
-        259,
-        83,
-        6
+        254,
+        93,
+        1
       ],
       [
-        57,
-        78,
-        17
+        59,
+        88,
+        5
       ],
       [
-        8,
-        32,
-        59
+        33,
+        29,
+        37
       ]
     ]
   },
   "latency": {
-    "onnx_exported": true,
-    "available": true,
-    "onnx_path": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\onnx\\transformer_classifier.onnx",
-    "avg_latency_ms": 39.590589998988435,
-    "target_met_lt_200ms": true
+    "onnx_exported": false,
+    "reason": "onnx_dependency_missing",
+    "target_met_lt_200ms": false
   },
   "artifact_paths": {
-    "artifact_dir": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction",
-    "example_predictions": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\example_predictions.csv",
-    "evaluation_report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\evaluation_report.json"
+    "artifact_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction",
+    "example_predictions": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\example_predictions.csv",
+    "evaluation_report": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\evaluation_report.json"
   }
 }
