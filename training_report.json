@@ -1,0 +1,711 @@
+{
+  "dataset_path": "dataset_encoded_v2.csv",
+  "audit_dataset_path": "dataset_v2.csv",
+  "split_sizes": {
+    "train": 7000,
+    "val": 1500,
+    "test_ood": 1500
+  },
+  "feature_count": 37,
+  "feature_columns": [
+    "user_type_id",
+    "vpn",
+    "rooted",
+    "emulator",
+    "ip_risk_score",
+    "session_duration",
+    "num_events",
+    "num_links_clicked",
+    "num_qr_scans",
+    "num_permission_requests",
+    "event_count_1",
+    "event_count_2",
+    "event_count_3",
+    "event_count_4",
+    "event_count_5",
+    "event_count_6",
+    "event_count_7",
+    "event_count_8",
+    "event_count_9",
+    "event_count_10",
+    "event_count_11",
+    "event_count_12",
+    "event_count_13",
+    "event_count_14",
+    "event_count_15",
+    "event_count_16",
+    "event_count_17",
+    "event_count_18",
+    "event_count_19",
+    "event_count_20",
+    "event_count_21",
+    "permission_abuse_ratio",
+    "link_click_rate",
+    "qr_to_action_ratio",
+    "rapid_activity_flag",
+    "event_diversity",
+    "suspicious_pattern_score"
+  ],
+  "class_weights": {
+    "0": 1.0,
+    "1": 1.5,
+    "2": 2.5
+  },
+  "forbidden_feature_check": {
+    "passed": true,
+    "forbidden_columns": [
+      "generator_version",
+      "label",
+      "label_id",
+      "risk_score",
+      "scenario_family",
+      "session_id",
+      "split",
+      "split_reason"
+    ]
+  },
+  "restricted_columns_dropped": [
+    "event_sequence_encoded",
+    "generator_version",
+    "label",
+    "label_id",
+    "risk_score",
+    "scenario_family",
+    "session_id",
+    "split",
+    "split_reason",
+    "timestamp_end",
+    "timestamp_start"
+  ],
+  "training_protocol": {
+    "train_split": "train",
+    "tune_split": "val",
+    "evaluation_split": "test_ood"
+  },
+  "decision_logic": {
+    "malicious_threshold": 0.6,
+    "suspicious_threshold": 0.35,
+    "low_risk_threshold": 0.3,
+    "high_risk_threshold": 0.6,
+    "permission_request_threshold": 3
+  },
+  "best_model_selection": {
+    "best_trial": {
+      "xgboost_params": {
+        "n_estimators": 240,
+        "max_depth": 5,
+        "learning_rate": 0.06,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9
+      },
+      "lightgbm_params": null,
+      "ensemble_weights": {
+        "xgboost": 1.0,
+        "lightgbm": 0.0
+      },
+      "malicious_precision": 0.5964285714285714,
+      "malicious_recall": 0.583916083916084,
+      "f1_macro": 0.5838994672002363,
+      "score": 0.5864169197469967
+    },
+    "trial_summaries": [
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.5964285714285714,
+        "malicious_recall": 0.583916083916084,
+        "f1_macro": 0.5838994672002363,
+        "score": 0.5864169197469967
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.5949820788530465,
+        "malicious_recall": 0.5804195804195804,
+        "f1_macro": 0.5806866962889209,
+        "score": 0.5833587916932077
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.5970149253731343,
+        "malicious_recall": 0.5594405594405595,
+        "f1_macro": 0.57531242367669,
+        "score": 0.5685426190506875
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.5964285714285714,
+        "malicious_recall": 0.583916083916084,
+        "f1_macro": 0.5838994672002363,
+        "score": 0.5864169197469967
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.6052631578947368,
+        "malicious_recall": 0.5629370629370629,
+        "f1_macro": 0.5804657235795966,
+        "score": 0.573155147992851
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 240,
+          "max_depth": 5,
+          "learning_rate": 0.06,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.6141732283464567,
+        "malicious_recall": 0.5454545454545454,
+        "f1_macro": 0.5773688861593053,
+        "score": 0.5623897161034036
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.5905511811023622,
+        "malicious_recall": 0.5244755244755245,
+        "f1_macro": 0.5648910812944835,
+        "score": 0.5417322114827879
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.5984251968503937,
+        "malicious_recall": 0.5314685314685315,
+        "f1_macro": 0.5698082632874047,
+        "score": 0.5486938377267913
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.6023622047244095,
+        "malicious_recall": 0.534965034965035,
+        "f1_macro": 0.5710572595612963,
+        "score": 0.552053691376536
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.5905511811023622,
+        "malicious_recall": 0.5244755244755245,
+        "f1_macro": 0.5648910812944835,
+        "score": 0.5417322114827879
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.6138211382113821,
+        "malicious_recall": 0.527972027972028,
+        "f1_macro": 0.5713940505107203,
+        "score": 0.5494840522737681
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 320,
+          "max_depth": 6,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.6131687242798354,
+        "malicious_recall": 0.5209790209790209,
+        "f1_macro": 0.5666311934071815,
+        "score": 0.5439821788819998
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.6239316239316239,
+        "malicious_recall": 0.5104895104895105,
+        "f1_macro": 0.5621726212768082,
+        "score": 0.538346244256663
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.6244725738396625,
+        "malicious_recall": 0.5174825174825175,
+        "f1_macro": 0.5636883746082745,
+        "score": 0.5435011144665222
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": {
+          "n_estimators": 240,
+          "learning_rate": 0.06,
+          "num_leaves": 31
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.625,
+        "malicious_recall": 0.5244755244755245,
+        "f1_macro": 0.5673060309306154,
+        "score": 0.5488634702259286
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": null,
+        "ensemble_weights": {
+          "xgboost": 1.0,
+          "lightgbm": 0.0
+        },
+        "malicious_precision": 0.6239316239316239,
+        "malicious_recall": 0.5104895104895105,
+        "f1_macro": 0.5621726212768082,
+        "score": 0.538346244256663
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.85,
+          "lightgbm": 0.15
+        },
+        "malicious_precision": 0.6282051282051282,
+        "malicious_recall": 0.513986013986014,
+        "f1_macro": 0.5625892408245349,
+        "score": 0.5416901595136889
+      },
+      {
+        "xgboost_params": {
+          "n_estimators": 420,
+          "max_depth": 7,
+          "learning_rate": 0.035,
+          "subsample": 0.95,
+          "colsample_bytree": 0.85
+        },
+        "lightgbm_params": {
+          "n_estimators": 320,
+          "learning_rate": 0.05,
+          "num_leaves": 63
+        },
+        "ensemble_weights": {
+          "xgboost": 0.7,
+          "lightgbm": 0.3
+        },
+        "malicious_precision": 0.6340425531914894,
+        "malicious_recall": 0.5209790209790209,
+        "f1_macro": 0.5610066657498217,
+        "score": 0.5475944918985947
+      }
+    ]
+  },
+  "test_ood_metrics": {
+    "confusion_matrix": [
+      [
+        762,
+        94,
+        16
+      ],
+      [
+        208,
+        104,
+        68
+      ],
+      [
+        23,
+        45,
+        180
+      ]
+    ],
+    "classification_report": {
+      "normal": {
+        "precision": 0.7673716012084593,
+        "recall": 0.8738532110091743,
+        "f1-score": 0.8171581769436997,
+        "support": 872.0
+      },
+      "suspicious": {
+        "precision": 0.4279835390946502,
+        "recall": 0.2736842105263158,
+        "f1-score": 0.33386837881219905,
+        "support": 380.0
+      },
+      "malicious": {
+        "precision": 0.6818181818181818,
+        "recall": 0.7258064516129032,
+        "f1-score": 0.703125,
+        "support": 248.0
+      },
+      "accuracy": 0.6973333333333334,
+      "macro avg": {
+        "precision": 0.6257244407070971,
+        "recall": 0.6244479577161312,
+        "f1-score": 0.6180505185852996,
+        "support": 1500.0
+      },
+      "weighted avg": {
+        "precision": 0.6672484601337684,
+        "recall": 0.6973333333333334,
+        "f1-score": 0.6758712761623612,
+        "support": 1500.0
+      }
+    },
+    "f1_macro": 0.6180505185852996,
+    "f1_weighted": 0.6758712761623612,
+    "per_class": {
+      "normal": {
+        "precision": 0.7673716012084593,
+        "recall": 0.8738532110091743,
+        "f1": 0.8171581769436997,
+        "support": 872
+      },
+      "suspicious": {
+        "precision": 0.4279835390946502,
+        "recall": 0.2736842105263158,
+        "f1": 0.33386837881219905,
+        "support": 380
+      },
+      "malicious": {
+        "precision": 0.6818181818181818,
+        "recall": 0.7258064516129032,
+        "f1": 0.703125,
+        "support": 248
+      }
+    }
+  },
+  "top_global_feature_importance": {
+    "xgboost": [
+      {
+        "feature": "suspicious_pattern_score",
+        "importance": 0.12315614521503448
+      },
+      {
+        "feature": "event_count_17",
+        "importance": 0.07025466114282608
+      },
+      {
+        "feature": "rapid_activity_flag",
+        "importance": 0.06395986676216125
+      },
+      {
+        "feature": "event_count_15",
+        "importance": 0.05348384380340576
+      },
+      {
+        "feature": "event_count_11",
+        "importance": 0.048086170107126236
+      },
+      {
+        "feature": "num_links_clicked",
+        "importance": 0.04463861510157585
+      },
+      {
+        "feature": "session_duration",
+        "importance": 0.0379367470741272
+      },
+      {
+        "feature": "link_click_rate",
+        "importance": 0.03677844628691673
+      },
+      {
+        "feature": "event_count_20",
+        "importance": 0.02972492016851902
+      },
+      {
+        "feature": "num_qr_scans",
+        "importance": 0.025736091658473015
+      },
+      {
+        "feature": "rooted",
+        "importance": 0.02395372837781906
+      },
+      {
+        "feature": "num_events",
+        "importance": 0.023612426593899727
+      },
+      {
+        "feature": "event_count_16",
+        "importance": 0.02298828214406967
+      },
+      {
+        "feature": "user_type_id",
+        "importance": 0.02286350540816784
+      },
+      {
+        "feature": "qr_to_action_ratio",
+        "importance": 0.022793622687458992
+      }
+    ],
+    "lightgbm": []
+  },
+  "sample_prediction_explanations": [
+    {
+      "row_index": 9,
+      "predicted_label": "malicious",
+      "risk_level": "HIGH RISK",
+      "final_score": 1.0,
+      "explanation": {
+        "top_features": [
+          {
+            "feature": "session_duration",
+            "contribution": 2.0530171394348145,
+            "value": 100.0
+          },
+          {
+            "feature": "suspicious_pattern_score",
+            "contribution": 0.7748867273330688,
+            "value": 0.8999999999999999
+          },
+          {
+            "feature": "event_count_17",
+            "contribution": 0.5315989255905151,
+            "value": 4.0
+          }
+        ],
+        "explanation_text": "Rapid session activity; Fraud-like event sequence; Event count 17"
+      }
+    },
+    {
+      "row_index": 28,
+      "predicted_label": "malicious",
+      "risk_level": "HIGH RISK",
+      "final_score": 1.0,
+      "explanation": {
+        "top_features": [
+          {
+            "feature": "session_duration",
+            "contribution": 1.7115579843521118,
+            "value": 90.0
+          },
+          {
+            "feature": "event_count_17",
+            "contribution": 0.5021203756332397,
+            "value": 3.0
+          },
+          {
+            "feature": "user_type_id",
+            "contribution": -0.430181086063385,
+            "value": 3.0
+          }
+        ],
+        "explanation_text": "Rapid session activity; Event count 17; User type id"
+      }
+    },
+    {
+      "row_index": 39,
+      "predicted_label": "malicious",
+      "risk_level": "HIGH RISK",
+      "final_score": 1.0,
+      "explanation": {
+        "top_features": [
+          {
+            "feature": "suspicious_pattern_score",
+            "contribution": 0.557636559009552,
+            "value": 0.8999999999999999
+          },
+          {
+            "feature": "num_events",
+            "contribution": 0.5198073983192444,
+            "value": 25.0
+          },
+          {
+            "feature": "user_type_id",
+            "contribution": -0.4806166887283325,
+            "value": 2.0
+          }
+        ],
+        "explanation_text": "Fraud-like event sequence; Rapid session activity; User type id"
+      }
+    }
+  ],
+  "output_files": {
+    "trained_model": "trained_model.pkl",
+    "feature_columns": "feature_columns.pkl",
+    "shap_explainer": "shap_explainer.pkl",
+    "predictions_with_scores": "predictions_with_scores.csv"
+  }
+}

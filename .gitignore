@@ -1,56 +1,8 @@
-# Python bytecode and caches
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyo
-*.pyd
-
-# Virtual environments
 .venv/
-venv/
-env/
-
-# Environment variables
-.env
-.env.*
-.envrc
-
-# IDE / editor files
-.vscode/
-.idea/
-*.suo
-*.user
-*.userosscache
-*.sln
-*.swp
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Test artifacts
-.pytest_cache/
-
-# Logs and temporary files
-*.log
-*.tmp
-*.bak
-*.cache
-*.pid
-
-# Model and data artifacts
-*.joblib
-*.onnx
-*.safetensors
-*.ckpt
-*.npz
-*.npy
-*.h5
-
-# Project output directories
-outputs/
-notebooks/**/.ipynb_checkpoints/
-
-# Optional local project/user settings
-.local/
-.DS_Store
-Thumbs.db
+__pycache__/
+*.pyc
+*.pyo
+predictions_with_scores.csv
+dataset_v2.csv
+dataset_encoded_v2.csv
+shap_explainer.pkl
