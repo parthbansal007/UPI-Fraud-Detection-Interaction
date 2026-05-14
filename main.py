@@ -34,7 +34,20 @@ def _json_arg(value: str | None) -> dict[str, Any]:
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="UPI interaction fraud detection orchestrator.")
     root_subparsers = parser.add_subparsers(dest="action", required=True)
-    full_parser = root_subparsers.add_parser("train-full-pipeline")
+    full_parser = root_subparsers.add_parser(
+        "train-full-pipeline",
+        help="Train, finalize, and evaluate an inference-ready interaction model",
+    )
+    full_parser.add_argument("--data-dir", type=Path, default=Path("interaction_data"))
+    full_parser.add_argument("--model-dir", type=Path, default=Path("models/interaction"))
+    full_parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
+    full_parser.add_argument("--seed", type=int, default=42)
+    full_parser.add_argument("--quick", action="store_true")
+    full_parser.add_argument("--max-length", type=int, default=96)
+    full_parser.add_argument("--epochs", type=float, default=4.0)
+    full_parser.add_argument("--train-batch-size", type=int, default=16)
+    full_parser.add_argument("--eval-batch-size", type=int, default=32)
+    full_parser.add_argument("--with-xai", action="store_true")
     train_parser = root_subparsers.add_parser("train", help="Train interaction model")
     train_parser.add_argument("--data-dir", type=Path, default=Path("interaction_data"))
     train_parser.add_argument("--model-dir", type=Path, default=Path("models/interaction"))
@@ -174,6 +187,49 @@ def _run_interaction_train(args: argparse.Namespace) -> None:
             "epochs": args.epochs,
             "train_batch_size": args.train_batch_size,
             "eval_batch_size": args.eval_batch_size,
+        }
+    )
+    print(json.dumps(report, indent=2))
+
+
+def _run_full_pipeline(args: argparse.Namespace) -> None:
+    report: dict[str, Any] = {}
+    report["training"] = train_interaction_model(
+        {
+            "data_dir": args.data_dir,
+            "model_dir": args.model_dir,
+            "output_dir": args.output_dir,
+            "seed": args.seed,
+            "quick": args.quick,
+            "max_length": args.max_length,
+            "epochs": args.epochs,
+            "train_batch_size": args.train_batch_size,
+            "eval_batch_size": args.eval_batch_size,
+        }
+    )
+    try:
+        report["finalization"] = finalize_trained_fraud_models(
+            {
+                "model_dir": args.model_dir,
+                "metadata_path": args.model_dir / "metadata.json",
+                "ensemble_report_path": args.model_dir / "ensemble_report.json",
+                "transformer_report_path": args.model_dir / "transformer" / "training_report.json",
+                "xgboost_report_path": args.model_dir / "xgboost_tuning_report.json",
+                "isolation_forest_report_path": args.model_dir / "isolation_forest_report.json",
+            }
+        )
+    except FileNotFoundError as exc:
+        report["finalization"] = {
+            "status": "skipped",
+            "reason": str(exc),
+        }
+    report["evaluation"] = evaluate_interaction_model(
+        {
+            "data_dir": args.data_dir,
+            "model_dir": args.model_dir,
+            "output_dir": args.output_dir,
+            "split": "test_ood",
+            "generate_xai": args.with_xai,
         }
     )
     print(json.dumps(report, indent=2))
@@ -331,6 +387,9 @@ def main() -> None:
     parser = _build_parser()
     args = parser.parse_args()
 
+    if args.action == "train-full-pipeline":
+        _run_full_pipeline(args)
+        return
     if args.action == "train":
         _run_interaction_train(args)
         return

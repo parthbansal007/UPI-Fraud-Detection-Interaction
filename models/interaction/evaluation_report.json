@@ -6,11 +6,12 @@
     "artifact_dir": "models\\interaction",
     "transformer_model_name": "microsoft/deberta-v3-base",
     "fallback_transformer_model_name": "distilbert-base-uncased",
-    "max_length": 64,
-    "train_batch_size": 2,
-    "eval_batch_size": 4,
-    "transformer_epochs": 0.1,
+    "max_length": 96,
+    "train_batch_size": 4,
+    "eval_batch_size": 8,
+    "transformer_epochs": 4.0,
     "transformer_learning_rates": [
+      2e-05,
       3e-05
     ],
     "transformer_weight_decay": 0.01,
@@ -21,9 +22,21 @@
         "learning_rate": 0.08,
         "subsample": 0.9,
         "colsample_bytree": 0.9
+      },
+      {
+        "max_depth": 5,
+        "learning_rate": 0.06,
+        "subsample": 0.85,
+        "colsample_bytree": 0.85
+      },
+      {
+        "max_depth": 6,
+        "learning_rate": 0.05,
+        "subsample": 0.9,
+        "colsample_bytree": 0.8
       }
     ],
-    "xgb_estimators": 300,
+    "xgb_estimators": 700,
     "xgb_early_stopping_rounds": 50,
     "iso_estimators": 300,
     "iso_contamination": 0.1,
@@ -37,8 +50,8 @@
     "onnx_vendor_paths": [
       "C:/onnxlib"
     ],
-    "latency_runs": 30,
-    "quick_mode": true
+    "latency_runs": 100,
+    "quick_mode": false
   },
   "transformer_model_used": "distilbert-base-uncased",
   "class_order": [
@@ -47,80 +60,80 @@
     "malicious"
   ],
   "thresholds": {
-    "malicious_threshold": 0.52,
-    "suspicious_threshold": 0.3
+    "malicious_threshold": 0.45,
+    "suspicious_threshold": 0.41000000000000003
   },
   "validation_metrics": {
-    "accuracy": 0.5442404006677797,
+    "accuracy": 0.6286666666666667,
     "precision_by_class": {
-      "normal": 0.6320754716981132,
-      "suspicious": 0.416988416988417,
-      "malicious": 0.7727272727272727
+      "normal": 0.7649700598802395,
+      "suspicious": 0.4713656387665198,
+      "malicious": 0.7350993377483444
     },
     "recall_by_class": {
-      "normal": 0.6836734693877551,
-      "suspicious": 0.5654450261780105,
-      "malicious": 0.14912280701754385
+      "normal": 0.6952380952380952,
+      "suspicious": 0.6701461377870563,
+      "malicious": 0.3881118881118881
     },
     "f1_by_class": {
-      "normal": 0.6568627450980392,
-      "suspicious": 0.48,
-      "malicious": 0.25
+      "normal": 0.7284390591589451,
+      "suspicious": 0.553448275862069,
+      "malicious": 0.5080091533180778
     },
-    "malicious_precision": 0.7727272727272727,
-    "malicious_recall": 0.14912280701754385,
+    "malicious_precision": 0.7350993377483444,
+    "malicious_recall": 0.3881118881118881,
     "confusion_matrix": [
       [
-        201,
-        92,
-        1
+        511,
+        217,
+        7
       ],
       [
-        79,
-        108,
-        4
+        125,
+        321,
+        33
       ],
       [
-        38,
-        59,
-        17
+        32,
+        143,
+        111
       ]
     ]
   },
   "test_ood_metrics": {
-    "accuracy": 0.6327212020033389,
+    "accuracy": 0.7133333333333334,
     "precision_by_class": {
-      "normal": 0.7341040462427746,
-      "suspicious": 0.41904761904761906,
-      "malicious": 0.8604651162790697
+      "normal": 0.8315539739027283,
+      "suspicious": 0.4717391304347826,
+      "malicious": 0.7715736040609137
     },
     "recall_by_class": {
-      "normal": 0.7298850574712644,
-      "suspicious": 0.5789473684210527,
-      "malicious": 0.37373737373737376
+      "normal": 0.8038990825688074,
+      "suspicious": 0.5710526315789474,
+      "malicious": 0.6129032258064516
     },
     "f1_by_class": {
-      "normal": 0.7319884726224783,
-      "suspicious": 0.4861878453038674,
-      "malicious": 0.5211267605633803
+      "normal": 0.8174927113702624,
+      "suspicious": 0.5166666666666667,
+      "malicious": 0.6831460674157304
     },
-    "malicious_precision": 0.8604651162790697,
-    "malicious_recall": 0.37373737373737376,
+    "malicious_precision": 0.7715736040609137,
+    "malicious_recall": 0.6129032258064516,
     "confusion_matrix": [
       [
-        254,
-        93,
-        1
-      ],
-      [
-        59,
-        88,
+        701,
+        166,
         5
       ],
       [
-        33,
-        29,
-        37
+        123,
+        217,
+        40
+      ],
+      [
+        19,
+        77,
+        152
       ]
     ]
   },

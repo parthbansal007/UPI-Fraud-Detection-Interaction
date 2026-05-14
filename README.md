@@ -1,79 +1,142 @@
 # UPI Interaction Fraud Detection
 
-This repository now contains only the interaction fraud detection module and its artifacts.
+This project predicts interaction-level UPI fraud risk from message text, URLs, QR payloads, device state, and behavioral event data.
 
-## Folder Structure
+The finalized runtime artifacts live in `models/interaction`, and the main command-line entry point is `main.py`.
+
+## Setup
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Use the project virtual environment when available:
+
+```powershell
+.\.venv\Scripts\python.exe main.py --help
+```
+
+## Single Inference
+
+```powershell
+.\.venv\Scripts\python.exe main.py infer `
+  --input-text "Urgent UPI verification needed now" `
+  --url "http://secure-kyc-update.in/verify-now?ref=upi"
+```
+
+The response contains:
+
+- `predicted_label`: `normal`, `suspicious`, or `malicious`
+- `risk_level`: `LOW`, `MEDIUM`, or `HIGH`
+- `fraud_probability`
+- per-class probabilities
+- short feature explanations
+
+## Batch Inference
+
+The batch path supports normal online-style columns such as `input_text`, `url`, and `qr_data`.
+
+It also supports the supplied raw interaction dataset shape directly:
+
+```powershell
+.\.venv\Scripts\python.exe main.py infer `
+  --input-file interaction_data\dataset_v2.csv `
+  --output-path outputs\predictions.csv
+```
+
+Batch outputs include:
+
+- `session_id`
+- `interaction_label`
+- `interaction_risk_score`
+- `interaction_risk_level`
+- `normal_probability`
+- `suspicious_probability`
+- `malicious_probability`
+- `true_label` when available
+- `source_split`
+- `scenario_family`
+
+## Evaluate
+
+```powershell
+.\.venv\Scripts\python.exe main.py evaluate --split test_ood
+```
+
+Latest finalized `test_ood` evaluation:
 
 ```text
-UPI-FRAUD-DETECTION/
-|
-|-- interaction_data/
-|   |-- dataset_v2.csv
-|   `-- dataset_encoded_v2.csv
-|
-|-- src/
-|   `-- interaction/
-|       |-- preprocess.py
-|       |-- feature_engineering.py
-|       |-- train_model.py
-|       |-- evaluate.py
-|       `-- xai.py
-|
-|-- models/
-|   |-- interaction/
-|   |-- xgboost_model.pkl
-|   `-- scaler.pkl
-|
-|-- outputs/
-|   |-- metrics.json
-|   |-- predictions.csv
-|   |-- shap_summary.png
-|   `-- shap_force_plot.html
-|
-|-- notebooks/
-|-- fraud_system/
-|-- requirements.txt
-|-- main.py
-`-- train_fraud_system.py
+accuracy: 0.6940
+malicious_precision: 0.7178
+malicious_recall: 0.5847
+malicious_f1: 0.6444
+roc_auc: 0.8965
 ```
 
-## Commands
+Outputs are written to:
 
-Train:
-
-```bash
-python main.py train --data-dir interaction_data --model-dir models/interaction --output-dir outputs
+```text
+outputs/metrics.json
+outputs/predictions.csv
 ```
 
-Quick train:
+## Final Reports
 
-```bash
-python main.py train --quick --epochs 1 --train-batch-size 8 --eval-batch-size 16
+Important project reports:
+
+```text
+models/interaction/final_project_report.json
+models/interaction/runtime_calibration_report.json
+models/interaction/evaluation_report.json
+models/interaction/ensemble_report.json
+models/interaction/xgboost_tuning_report.json
+models/interaction/transformer/training_report.json
 ```
 
-Evaluate:
+The finalized runtime uses calibrated thresholds selected on the validation split:
 
-```bash
-python main.py evaluate --split test_ood --with-xai
+```text
+ensemble_weights: transformer=0.35, xgboost=0.55, anomaly=0.10
+malicious_threshold: 0.34
+suspicious_threshold: 0.35
 ```
- 
-Single inference:
 
-```bash
-python main.py infer \
-  --input-text "Urgent UPI verification needed now" \
-  --url "http://secure-kyc-update.in/verify-now?ref=upi"
+## Training
+
+Quick smoke training:
+
+```powershell
+.\.venv\Scripts\python.exe main.py train --quick --epochs 1 --train-batch-size 8 --eval-batch-size 16
+```
+
+Full train/finalize/evaluate path:
+
+```powershell
+.\.venv\Scripts\python.exe main.py train-full-pipeline `
+  --data-dir interaction_data `
+  --model-dir models\interaction `
+  --output-dir outputs
 ```
 
 Backward-compatible shim:
 
-```bash
-python train_fraud_system.py --quick
+```powershell
+.\.venv\Scripts\python.exe train_fraud_system.py --quick
 ```
 
-## Public Interaction API
+## Public Python API
 
-From `src.interaction`:
+```python
+from src.interaction import detect_fraud, predict_interaction_risk
+
+result = detect_fraud(
+    input_text="Urgent UPI verification needed now",
+    url="http://secure-kyc-update.in/verify-now?ref=upi",
+    qr_data="",
+)
+```
+
+Available API functions:
 
 - `train_interaction_model(config: dict) -> dict`
 - `load_interaction_model(model_dir: str) -> object`

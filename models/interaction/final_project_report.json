@@ -1,0 +1,185 @@
+{
+  "status": "ready_for_inference",
+  "model_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction",
+  "metadata_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\metadata.json",
+  "class_order": [
+    "normal",
+    "suspicious",
+    "malicious"
+  ],
+  "input_modes": {
+    "single": "input_text + url + optional qr_data + optional device_info_json",
+    "batch": "CSV with online fields, or raw interaction columns such as event_sequence, event_timestamps, device_state, and behavioral_features"
+  },
+  "output_columns": [
+    "session_id",
+    "interaction_label",
+    "interaction_risk_score",
+    "interaction_risk_level",
+    "normal_probability",
+    "suspicious_probability",
+    "malicious_probability"
+  ],
+  "selected_runtime": {
+    "transformer_model_name": "distilbert-base-uncased",
+    "max_length": 96,
+    "ensemble_weights": [
+      0.35,
+      0.55,
+      0.1
+    ],
+    "malicious_threshold": 0.34,
+    "suspicious_threshold": 0.35
+  },
+  "quality_summary": {
+    "calibrated_runtime_test_ood": {
+      "accuracy": 0.694,
+      "macro_f1": 0.6111474160153388,
+      "malicious_precision": 0.7178217821782178,
+      "malicious_recall": 0.5846774193548387,
+      "malicious_f1": 0.6444444444444445,
+      "precision_by_class": {
+        "normal": 0.7495164410058027,
+        "suspicious": 0.4583333333333333,
+        "malicious": 0.7178217821782178
+      },
+      "recall_by_class": {
+        "normal": 0.8887614678899083,
+        "suspicious": 0.31842105263157894,
+        "malicious": 0.5846774193548387
+      },
+      "f1_by_class": {
+        "normal": 0.8132214060860441,
+        "suspicious": 0.37577639751552794,
+        "malicious": 0.6444444444444445
+      }
+    },
+    "historical_training_test_ood": {
+      "accuracy": 0.7133333333333334,
+      "precision_by_class": {
+        "normal": 0.8315539739027283,
+        "suspicious": 0.4717391304347826,
+        "malicious": 0.7715736040609137
+      },
+      "recall_by_class": {
+        "normal": 0.8038990825688074,
+        "suspicious": 0.5710526315789474,
+        "malicious": 0.6129032258064516
+      },
+      "f1_by_class": {
+        "normal": 0.8174927113702624,
+        "suspicious": 0.5166666666666667,
+        "malicious": 0.6831460674157304
+      },
+      "malicious_precision": 0.7715736040609137,
+      "malicious_recall": 0.6129032258064516,
+      "confusion_matrix": [
+        [
+          701,
+          166,
+          5
+        ],
+        [
+          123,
+          217,
+          40
+        ],
+        [
+          19,
+          77,
+          152
+        ]
+      ]
+    },
+    "ensemble_test_ood": {
+      "accuracy": 0.6706666666666666,
+      "malicious_precision": 0.8541666666666666,
+      "malicious_recall": 0.4959677419354839,
+      "malicious_f1": 0.6275510204081632,
+      "precision_by_class": {
+        "normal": 0.6541984732824427,
+        "suspicious": 0.5652173913043478,
+        "malicious": 0.8541666666666666
+      },
+      "recall_by_class": {
+        "normal": 0.9827981651376146,
+        "suspicious": 0.06842105263157895,
+        "malicious": 0.4959677419354839
+      },
+      "f1_by_class": {
+        "normal": 0.7855178735105408,
+        "suspicious": 0.12206572769953052,
+        "malicious": 0.6275510204081632
+      }
+    },
+    "xgboost_test_ood": {
+      "accuracy": 0.7113333333333334,
+      "malicious_precision": 0.7227722772277227,
+      "malicious_recall": 0.5887096774193549,
+      "precision_by_class": {
+        "normal": 0.8431137724550898,
+        "suspicious": 0.468682505399568,
+        "malicious": 0.7227722772277227
+      },
+      "recall_by_class": {
+        "normal": 0.8073394495412844,
+        "suspicious": 0.5710526315789474,
+        "malicious": 0.5887096774193549
+      },
+      "f1_by_class": {
+        "normal": 0.824838898652607,
+        "suspicious": 0.5148279952550415,
+        "malicious": 0.6488888888888888
+      }
+    },
+    "transformer_test_ood": {
+      "accuracy": 0.6653333333333333,
+      "malicious_precision": 0.5316901408450704,
+      "malicious_recall": 0.6088709677419355,
+      "precision_by_class": {
+        "normal": 0.7981438515081206,
+        "suspicious": 0.4491525423728814,
+        "malicious": 0.5316901408450704
+      },
+      "recall_by_class": {
+        "normal": 0.7889908256880734,
+        "suspicious": 0.41842105263157897,
+        "malicious": 0.6088709677419355
+      },
+      "f1_by_class": {
+        "normal": 0.7935409457900807,
+        "suspicious": 0.4332425068119891,
+        "malicious": 0.5676691729323309
+      }
+    },
+    "isolation_forest": {
+      "method": "quantile_minmax",
+      "low_quantile": 0.05,
+      "high_quantile": 0.95,
+      "scale_low": -0.0915890675390311,
+      "scale_high": 0.08459784544657323,
+      "score_range_train": [
+        0.0,
+        1.0
+      ],
+      "score_range_val": [
+        0.0,
+        1.0
+      ],
+      "score_range_test": [
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "inference_smoke_test": {
+    "predicted_label": "normal",
+    "risk_level": "LOW",
+    "fraud_probability": 0.10028716273454552
+  },
+  "recommended_commands": {
+    "single_inference": "python main.py infer --input-text \"Urgent UPI verification needed now\" --url \"http://secure-kyc-update.in/verify-now?ref=upi\"",
+    "batch_inference": "python main.py infer --input-file interaction_data/dataset_v2.csv --output-path outputs/predictions.csv",
+    "evaluate": "python main.py evaluate --split test_ood"
+  }
+}
