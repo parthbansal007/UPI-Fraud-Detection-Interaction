@@ -80,6 +80,18 @@ outputs/metrics.json
 outputs/predictions.csv
 ```
 
+## Evaluation Graphs
+
+Generate the core model-evaluation graph bundle:
+
+```powershell
+.\.venv\Scripts\python.exe main.py plot-evaluation `
+  --predictions-path outputs\predictions.csv `
+  --output-dir outputs\evaluation_graphs
+```
+
+Graphs include confusion matrices, ROC curves, precision-recall curves, class metric bars, malicious threshold tradeoffs, score distributions, calibration, and confidence distribution.
+
 ## Final Reports
 
 Important project reports:

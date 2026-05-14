@@ -11,6 +11,7 @@ from src.interaction import (
     detect_fraud,
     evaluate_fraud_detection_system,
     evaluate_interaction_model,
+    export_evaluation_graphs,
     finalize_trained_fraud_models,
     generate_transformer_feature_matrices,
     predict_interaction_risk,
@@ -144,6 +145,15 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     eval_system_parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
 
+    graph_parser = root_subparsers.add_parser(
+        "plot-evaluation",
+        help="Generate evaluation graphs from predictions.csv",
+    )
+    graph_parser.add_argument("--predictions-path", type=Path, default=Path("outputs/predictions.csv"))
+    graph_parser.add_argument("--output-dir", type=Path, default=Path("outputs/evaluation_graphs"))
+    graph_parser.add_argument("--metadata-path", type=Path, default=Path("models/interaction/metadata.json"))
+    graph_parser.add_argument("--dpi", type=int, default=180)
+
     finalize_parser = root_subparsers.add_parser(
         "finalize-models",
         help="Finalize trained fraud models and write inference-compatible metadata",
@@ -254,6 +264,18 @@ def _run_system_evaluate(args: argparse.Namespace) -> None:
         {
             "predictions_path": args.predictions_path,
             "output_dir": args.output_dir,
+        }
+    )
+    print(json.dumps(report, indent=2))
+
+
+def _run_evaluation_graphs(args: argparse.Namespace) -> None:
+    report = export_evaluation_graphs(
+        {
+            "predictions_path": args.predictions_path,
+            "output_dir": args.output_dir,
+            "metadata_path": args.metadata_path,
+            "dpi": args.dpi,
         }
     )
     print(json.dumps(report, indent=2))
@@ -413,6 +435,9 @@ def main() -> None:
         return
     if args.action == "evaluate-system":
         _run_system_evaluate(args)
+        return
+    if args.action == "plot-evaluation":
+        _run_evaluation_graphs(args)
         return
     if args.action == "finalize-models":
         _run_finalize_models(args)
