@@ -18,8 +18,8 @@
     "method": "quantile_minmax",
     "low_quantile": 0.05,
     "high_quantile": 0.95,
-    "scale_low": -0.11080714896222615,
-    "scale_high": 0.06821070186869012,
+    "scale_low": -0.0915890675390311,
+    "scale_high": 0.08459784544657323,
     "score_range_train": [
       0.0,
       1.0
@@ -34,10 +34,10 @@
     ]
   },
   "artifact_paths": {
-    "isolation_forest_model": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\isolation_forest.joblib",
-    "anomaly_scores": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\isolation_forest_scores.csv",
-    "report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\isolation_forest_report.json",
-    "matrix_bundle": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\processed_matrices\\feature_matrices.npz"
+    "isolation_forest_model": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\isolation_forest.joblib",
+    "anomaly_scores": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\outputs\\isolation_forest_scores.csv",
+    "report": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\isolation_forest_report.json",
+    "matrix_bundle": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\outputs\\processed_matrices\\feature_matrices.npz"
   },
   "config": {
     "matrix_dir": "outputs\\processed_matrices",

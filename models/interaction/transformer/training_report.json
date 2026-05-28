@@ -9,7 +9,7 @@
     "suspicious": 1,
     "malicious": 2
   },
-  "selected_backbone": "distilroberta-base",
+  "selected_backbone": "distilbert-base-uncased",
   "best_learning_rate": 2e-05,
   "target_metric": "malicious_precision",
   "class_weights": {
@@ -83,9 +83,9 @@
     }
   },
   "artifact_paths": {
-    "model_dir": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\transformer",
+    "model_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\transformer",
     "probability_scores": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\outputs\\transformer_probability_scores.csv",
-    "training_report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\transformer\\training_report.json"
+    "training_report": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\transformer\\training_report.json"
   },
   "config": {
     "data_dir": "interaction_data",
@@ -110,5 +110,17 @@
       2.0,
       4.0
     ]
+  },
+  "original_selected_backbone": "distilroberta-base",
+  "artifact_consistency": {
+    "status": "aligned_to_local_artifact",
+    "local_model_name": "distilbert-base-uncased",
+    "config_model_type": "distilbert",
+    "config_architectures": [
+      "DistilBertForSequenceClassification"
+    ],
+    "metadata_model_name": "distilbert-base-uncased",
+    "report_selected_backbone": "distilbert-base-uncased",
+    "report_matches_local": true
   }
 }

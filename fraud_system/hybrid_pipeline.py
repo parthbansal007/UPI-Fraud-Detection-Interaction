@@ -10,6 +10,7 @@ import re
 import shutil
 import sys
 import time
+import warnings
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -122,6 +123,53 @@ def _json_safe(value: Any) -> Any:
     if isinstance(value, (np.bool_,)):
         return bool(value)
     return value
+
+
+def _install_sklearn_pickle_compat() -> None:
+    """Install lightweight aliases for sklearn private classes used by older artifacts."""
+    try:
+        from sklearn.compose import _column_transformer
+    except Exception:
+        return
+
+    if not hasattr(_column_transformer, "_RemainderColsList"):
+        class _RemainderColsList(list):
+            pass
+
+        _RemainderColsList.__module__ = _column_transformer.__name__
+        _column_transformer._RemainderColsList = _RemainderColsList
+
+
+def _iter_sklearn_steps(estimator: Any) -> list[Any]:
+    steps: list[Any] = [estimator]
+    for attr_name in ("steps", "transformers", "transformers_"):
+        for item in getattr(estimator, attr_name, []) or []:
+            if isinstance(item, tuple):
+                for value in item[1:]:
+                    if hasattr(value, "transform") or hasattr(value, "fit"):
+                        steps.extend(_iter_sklearn_steps(value))
+            elif hasattr(item, "transform") or hasattr(item, "fit"):
+                steps.extend(_iter_sklearn_steps(item))
+    return steps
+
+
+def _repair_sklearn_artifact(estimator: Any) -> Any:
+    for step in _iter_sklearn_steps(estimator):
+        if step.__class__.__name__ == "SimpleImputer" and not hasattr(step, "_fill_dtype"):
+            step._fill_dtype = getattr(step, "_fit_dtype", None)
+    return estimator
+
+
+def _load_joblib_artifact(path: Path) -> Any:
+    _install_sklearn_pickle_compat()
+    with warnings.catch_warnings():
+        try:
+            from sklearn.exceptions import InconsistentVersionWarning
+
+            warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+        except Exception:
+            warnings.filterwarnings("ignore", message=".*Trying to unpickle estimator.*")
+        return joblib.load(path)
 
 
 class TextDataset(torch.utils.data.Dataset):
@@ -494,8 +542,7 @@ class HybridFraudDetector:
 
             records.append(base_record)
 
-        df = pd.DataFrame(records)
-        df = df[df["label"].isin(LABEL_ORDER)].reset_index(drop=True)
+        df = pd.DataFrame(records).reset_index(drop=True)
 
         structured_exclude = {"label", "text_input", "url_input", "qr_data"}
         structured_exclude.update(BLOCKED_MODEL_FEATURE_COLUMNS)
@@ -1241,6 +1288,9 @@ class HybridFraudDetector:
         out["fraud_probability"] = malicious_scores
         label_risk_map = {"malicious": "HIGH", "suspicious": "MEDIUM", "normal": "LOW"}
         out["risk_level"] = out["predicted_label"].map(label_risk_map)
+        out["normal_probability"] = combined[:, self.label_to_id["normal"]]
+        out["suspicious_probability"] = combined[:, self.label_to_id["suspicious"]]
+        out["malicious_probability"] = combined[:, self.label_to_id["malicious"]]
         return out
 
     def _ensure_onnx_available(self) -> bool:
@@ -1464,8 +1514,8 @@ class HybridFraudDetector:
         transformer_dir = artifact_path / "transformer"
         model.tokenizer = AutoTokenizer.from_pretrained(str(transformer_dir))
         model.transformer_model = AutoModelForSequenceClassification.from_pretrained(str(transformer_dir))
-        model.preprocessor = joblib.load(artifact_path / "structured_preprocessor.joblib")
-        model.iforest = joblib.load(artifact_path / "isolation_forest.joblib")
+        model.preprocessor = _repair_sklearn_artifact(_load_joblib_artifact(artifact_path / "structured_preprocessor.joblib"))
+        model.iforest = _repair_sklearn_artifact(_load_joblib_artifact(artifact_path / "isolation_forest.joblib"))
         model.xgb_model = xgb.XGBClassifier()
         model.xgb_model.load_model(str(artifact_path / "xgboost_model.json"))
 

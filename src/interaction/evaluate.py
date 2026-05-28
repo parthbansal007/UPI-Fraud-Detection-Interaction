@@ -36,12 +36,17 @@ def build_feature_frame_for_split(
     return split_df
 
 
-def _build_metrics_payload(y_true: pd.Series, y_pred: pd.Series, split: str) -> dict[str, Any]:
+def _build_metrics_payload(
+    y_true: pd.Series,
+    y_pred: pd.Series,
+    split: str,
+    y_score: pd.Series | None = None,
+) -> dict[str, Any]:
     report = classification_report(y_true, y_pred, labels=LABEL_ORDER, output_dict=True, zero_division=0)
     try:
         y_bin = (y_true == "malicious").astype(int)
-        p_bin = (y_pred == "malicious").astype(int)
-        auc = roc_auc_score(y_bin, p_bin)
+        score = y_score.astype(float) if y_score is not None else (y_pred == "malicious").astype(int)
+        auc = roc_auc_score(y_bin, score)
     except:
         auc = 0.0
     
@@ -92,14 +97,24 @@ def evaluate_interaction_model(config: dict[str, Any] | None = None) -> dict[str
             "interaction_label": pred_df["predicted_label"],
             "interaction_risk_score": pred_df["fraud_probability"],
             "interaction_risk_level": pred_df["risk_level"],
+            "normal_probability": pred_df["normal_probability"],
+            "suspicious_probability": pred_df["suspicious_probability"],
+            "malicious_probability": pred_df["malicious_probability"],
             "true_label": pred_df["label"],
+            "source_split": pred_df["split"],
+            "scenario_family": pred_df["scenario_family"],
         }
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     predictions_path = output_dir / "predictions.csv"
     standardized.to_csv(predictions_path, index=False)
 
-    metrics_payload = _build_metrics_payload(pred_df["label"], pred_df["predicted_label"], split=split)
+    metrics_payload = _build_metrics_payload(
+        pred_df["label"],
+        pred_df["predicted_label"],
+        split=split,
+        y_score=pred_df["fraud_probability"],
+    )
     metrics_payload["model_dir"] = str(model_dir.resolve())
     metrics_payload["predictions_path"] = str(predictions_path.resolve())
 

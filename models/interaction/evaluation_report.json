@@ -7,10 +7,11 @@
     "transformer_model_name": "microsoft/deberta-v3-base",
     "fallback_transformer_model_name": "distilbert-base-uncased",
     "max_length": 96,
-    "train_batch_size": 16,
-    "eval_batch_size": 32,
+    "train_batch_size": 4,
+    "eval_batch_size": 8,
     "transformer_epochs": 4.0,
     "transformer_learning_rates": [
+      2e-05,
       3e-05
     ],
     "transformer_weight_decay": 0.01,
@@ -21,9 +22,21 @@
         "learning_rate": 0.08,
         "subsample": 0.9,
         "colsample_bytree": 0.9
+      },
+      {
+        "max_depth": 5,
+        "learning_rate": 0.06,
+        "subsample": 0.85,
+        "colsample_bytree": 0.85
+      },
+      {
+        "max_depth": 6,
+        "learning_rate": 0.05,
+        "subsample": 0.9,
+        "colsample_bytree": 0.8
       }
     ],
-    "xgb_estimators": 300,
+    "xgb_estimators": 700,
     "xgb_early_stopping_rounds": 50,
     "iso_estimators": 300,
     "iso_contamination": 0.1,
@@ -37,8 +50,8 @@
     "onnx_vendor_paths": [
       "C:/onnxlib"
     ],
-    "latency_runs": 30,
-    "quick_mode": true
+    "latency_runs": 100,
+    "quick_mode": false
   },
   "transformer_model_used": "distilbert-base-uncased",
   "class_order": [
@@ -47,93 +60,91 @@
     "malicious"
   ],
   "thresholds": {
-    "malicious_threshold": 0.52,
-    "suspicious_threshold": 0.45
+    "malicious_threshold": 0.45,
+    "suspicious_threshold": 0.41000000000000003
   },
   "validation_metrics": {
-    "accuracy": 0.6060100166944908,
+    "accuracy": 0.6286666666666667,
     "precision_by_class": {
-      "normal": 0.7596899224806202,
-      "suspicious": 0.44947735191637633,
-      "malicious": 0.7037037037037037
+      "normal": 0.7649700598802395,
+      "suspicious": 0.4713656387665198,
+      "malicious": 0.7350993377483444
     },
     "recall_by_class": {
-      "normal": 0.6666666666666666,
-      "suspicious": 0.675392670157068,
-      "malicious": 0.3333333333333333
+      "normal": 0.6952380952380952,
+      "suspicious": 0.6701461377870563,
+      "malicious": 0.3881118881118881
     },
     "f1_by_class": {
-      "normal": 0.7101449275362319,
-      "suspicious": 0.5397489539748954,
-      "malicious": 0.4523809523809524
+      "normal": 0.7284390591589451,
+      "suspicious": 0.553448275862069,
+      "malicious": 0.5080091533180778
     },
-    "malicious_precision": 0.7037037037037037,
-    "malicious_recall": 0.3333333333333333,
+    "malicious_precision": 0.7350993377483444,
+    "malicious_recall": 0.3881118881118881,
     "confusion_matrix": [
       [
-        196,
-        93,
-        5
+        511,
+        217,
+        7
       ],
       [
-        51,
-        129,
-        11
+        125,
+        321,
+        33
       ],
       [
-        11,
-        65,
-        38
+        32,
+        143,
+        111
       ]
     ]
   },
   "test_ood_metrics": {
-    "accuracy": 0.66110183639399,
+    "accuracy": 0.7133333333333334,
     "precision_by_class": {
-      "normal": 0.7993827160493827,
-      "suspicious": 0.40414507772020725,
-      "malicious": 0.7195121951219512
+      "normal": 0.8315539739027283,
+      "suspicious": 0.4717391304347826,
+      "malicious": 0.7715736040609137
     },
     "recall_by_class": {
-      "normal": 0.7442528735632183,
-      "suspicious": 0.5131578947368421,
-      "malicious": 0.5959595959595959
+      "normal": 0.8038990825688074,
+      "suspicious": 0.5710526315789474,
+      "malicious": 0.6129032258064516
     },
     "f1_by_class": {
-      "normal": 0.7708333333333334,
-      "suspicious": 0.45217391304347826,
-      "malicious": 0.6519337016574586
+      "normal": 0.8174927113702624,
+      "suspicious": 0.5166666666666667,
+      "malicious": 0.6831460674157304
     },
-    "malicious_precision": 0.7195121951219512,
-    "malicious_recall": 0.5959595959595959,
+    "malicious_precision": 0.7715736040609137,
+    "malicious_recall": 0.6129032258064516,
     "confusion_matrix": [
       [
-        259,
-        83,
-        6
+        701,
+        166,
+        5
       ],
       [
-        57,
-        78,
-        17
+        123,
+        217,
+        40
       ],
       [
-        8,
-        32,
-        59
+        19,
+        77,
+        152
       ]
     ]
   },
   "latency": {
-    "onnx_exported": true,
-    "available": true,
-    "onnx_path": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\onnx\\transformer_classifier.onnx",
-    "avg_latency_ms": 39.590589998988435,
-    "target_met_lt_200ms": true
+    "onnx_exported": false,
+    "reason": "onnx_dependency_missing",
+    "target_met_lt_200ms": false
   },
   "artifact_paths": {
-    "artifact_dir": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction",
-    "example_predictions": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\example_predictions.csv",
-    "evaluation_report": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\evaluation_report.json"
+    "artifact_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction",
+    "example_predictions": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\example_predictions.csv",
+    "evaluation_report": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\evaluation_report.json"
   }
 }

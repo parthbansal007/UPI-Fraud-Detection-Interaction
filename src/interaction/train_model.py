@@ -195,6 +195,101 @@ def _extract_device_info(record: dict[str, Any]) -> dict[str, Any]:
     return base
 
 
+def _safe_json_value(value: Any, fallback: Any) -> Any:
+    if isinstance(value, (dict, list)):
+        return value
+    if value is None or pd.isna(value):
+        return fallback
+    text = str(value).strip()
+    if not text:
+        return fallback
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return fallback
+
+
+def _looks_like_raw_interaction_frame(df: pd.DataFrame) -> bool:
+    raw_markers = {"event_sequence", "event_timestamps", "device_state", "behavioral_features"}
+    return bool(raw_markers.intersection(df.columns))
+
+
+def _prepare_raw_interaction_features(detector: HybridFraudDetector, df: pd.DataFrame) -> pd.DataFrame:
+    work = df.copy()
+    if "session_id" not in work.columns:
+        work["session_id"] = [f"interaction_{idx:06d}" for idx in range(len(work))]
+    if "label" not in work.columns:
+        work["label"] = "unknown"
+    if "split" not in work.columns:
+        work["split"] = "inference"
+    if "scenario_family" not in work.columns:
+        work["scenario_family"] = "online_inference"
+    if "risk_score" not in work.columns:
+        work["risk_score"] = 0.0
+    if "user_type" not in work.columns:
+        work["user_type"] = "unknown_user"
+
+    for col, fallback in (
+        ("event_sequence", []),
+        ("event_timestamps", []),
+        ("device_state", {}),
+        ("behavioral_features", {}),
+    ):
+        if col not in work.columns:
+            work[col] = json.dumps(fallback)
+
+    work["event_sequence_list"] = work["event_sequence"].apply(lambda value: _safe_json_value(value, []))
+    work["event_timestamps_list"] = work["event_timestamps"].apply(lambda value: _safe_json_value(value, []))
+    work["device_state_dict"] = work["device_state"].apply(lambda value: _safe_json_value(value, {}))
+    work["behavioral_dict"] = work["behavioral_features"].apply(lambda value: _safe_json_value(value, {}))
+
+    trained_state = {
+        "structured_cols": list(detector.structured_cols),
+        "numeric_cols": list(detector.numeric_cols),
+        "categorical_cols": list(detector.categorical_cols),
+    }
+    try:
+        feature_df = detector._build_feature_table(work)
+    finally:
+        detector.structured_cols = trained_state["structured_cols"]
+        detector.numeric_cols = trained_state["numeric_cols"]
+        detector.categorical_cols = trained_state["categorical_cols"]
+
+    if feature_df.empty:
+        raise ValueError("No rows were available for interaction prediction.")
+
+    for col in detector.structured_cols:
+        if col in feature_df.columns:
+            continue
+        if col in detector.numeric_cols:
+            feature_df[col] = float(detector.numeric_defaults.get(col, 0.0))
+        else:
+            feature_df[col] = detector.categorical_defaults.get(col, "unknown")
+    return feature_df
+
+
+def _standardize_prediction_table(pred_df: pd.DataFrame) -> pd.DataFrame:
+    out = pd.DataFrame(
+        {
+            "session_id": pred_df["session_id"].astype(str),
+            "interaction_label": pred_df["predicted_label"].astype(str),
+            "interaction_risk_score": pred_df["fraud_probability"].astype(float),
+            "interaction_risk_level": pred_df["risk_level"].astype(str),
+            "normal_probability": pred_df.get("normal_probability"),
+            "suspicious_probability": pred_df.get("suspicious_probability"),
+            "malicious_probability": pred_df.get("malicious_probability"),
+        }
+    )
+    if "label" in pred_df.columns:
+        true_label = pred_df["label"].astype(str)
+        out["true_label"] = true_label.where(true_label.isin(["normal", "suspicious", "malicious"]), "")
+    if "split" in pred_df.columns:
+        out["source_split"] = pred_df["split"].astype(str)
+    if "scenario_family" in pred_df.columns:
+        out["scenario_family"] = pred_df["scenario_family"].astype(str)
+    return out
+
+
 def predict_interaction_risk(
     df_or_inputs: pd.DataFrame | list[dict[str, Any]] | dict[str, Any],
     model_dir: str | Path = DEFAULT_MODEL_DIR,
@@ -209,6 +304,11 @@ def predict_interaction_risk(
         raise TypeError("df_or_inputs must be a DataFrame, dict, or list[dict].")
 
     detector = load_interaction_model(model_dir=model_dir)
+    input_df = pd.DataFrame(records)
+    if _looks_like_raw_interaction_frame(input_df):
+        feature_df = _prepare_raw_interaction_features(detector=detector, df=input_df)
+        return _standardize_prediction_table(detector.predict_table(feature_df))
+
     rows: list[dict[str, Any]] = []
     for idx, record in enumerate(records):
         session_id = str(record.get("session_id", f"interaction_{idx:06d}"))
@@ -227,6 +327,7 @@ def predict_interaction_risk(
                 "normal_probability": float(result["class_probabilities"]["normal"]),
                 "suspicious_probability": float(result["class_probabilities"]["suspicious"]),
                 "malicious_probability": float(result["class_probabilities"]["malicious"]),
+                "true_label": str(record.get("label", "")) if str(record.get("label", "")).lower() in ["normal", "suspicious", "malicious"] else "",
             }
         )
     return pd.DataFrame(rows)

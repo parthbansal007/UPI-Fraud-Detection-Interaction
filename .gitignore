@@ -47,7 +47,10 @@ env/
 *.h5
 
 # Project output directories
-outputs/
+outputs/*
+!outputs/evaluation_graphs/
+outputs/evaluation_graphs/*
+!outputs/evaluation_graphs/*.png
 notebooks/**/.ipynb_checkpoints/
 
 # Optional local project/user settings

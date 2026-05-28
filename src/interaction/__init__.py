@@ -6,6 +6,7 @@ from .train_ensemble import train_ensemble_model
 from .train_isolation_forest import train_isolation_forest_model
 from .train_transformer import train_transformer_text_model
 from .train_xgboost import train_optimized_xgboost
+from .visualize import export_evaluation_graphs
 from .train_model import (
     detect_fraud,
     load_interaction_model,
@@ -29,4 +30,5 @@ __all__ = [
     "train_isolation_forest_model",
     "train_transformer_text_model",
     "train_optimized_xgboost",
+    "export_evaluation_graphs",
 ]
