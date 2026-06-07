@@ -29,7 +29,7 @@ class TransformerTextConfig:
     model_dir: Path = Path("models/interaction/transformer")
     output_dir: Path = Path("outputs")
     seed: int = 42
-    model_candidates: tuple[str, ...] = ("microsoft/deberta-v3-small", "roberta-base")
+    model_candidates: tuple[str, ...] = ("distilbert-base-uncased",)
     max_length: int = 96
     train_batch_size: int = 16
     eval_batch_size: int = 32
@@ -67,7 +67,7 @@ def _load_backbone(
             return tokenizer, model_name
         except Exception as err:
             last_err = err
-    raise RuntimeError(f"Unable to load DeBERTa/RoBERTa backbone. Last error: {last_err}")
+    raise RuntimeError(f"Unable to load transformer backbone. Last error: {last_err}")
 
 
 def _tokenize_batched(
@@ -274,8 +274,13 @@ def train_transformer_text_model(config: dict[str, Any] | None = None) -> dict[s
             kwargs["evaluation_strategy"] = "epoch"
         if "eval_strategy" in arg_names:
             kwargs["eval_strategy"] = "epoch"
-        if "fp16" in arg_names:
-            kwargs["fp16"] = bool(torch.cuda.is_available())
+        # DeBERTa is numerically unstable with fp16; prefer bf16 on Ampere+.
+        if torch.cuda.is_available():
+            if torch.cuda.is_bf16_supported():
+                kwargs["bf16"] = True
+            elif "fp16" in arg_names:
+                kwargs["fp16"] = True
+        kwargs["max_grad_norm"] = 0.5
 
         training_args = TrainingArguments(**kwargs)
         trainer = WeightedLossTrainer(

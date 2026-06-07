@@ -47,7 +47,7 @@ def _build_metrics_payload(
         y_bin = (y_true == "malicious").astype(int)
         score = y_score.astype(float) if y_score is not None else (y_pred == "malicious").astype(int)
         auc = roc_auc_score(y_bin, score)
-    except:
+    except Exception:
         auc = 0.0
     
     return {

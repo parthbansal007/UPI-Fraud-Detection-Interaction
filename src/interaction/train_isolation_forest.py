@@ -4,7 +4,6 @@ import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
-from xml.parsers.expat import model
 
 import joblib
 import numpy as np
@@ -12,6 +11,7 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 
 from .feature_matrices import generate_transformer_feature_matrices
+
 
 
 @dataclass
@@ -89,8 +89,7 @@ def train_isolation_forest_model(config: dict[str, Any] | None = None) -> dict[s
         random_state=cfg.random_state,
         n_jobs=cfg.n_jobs,
     )
-    # train only on normal samples (better anomaly detection)
-# assume y_train exists or use threshold filtering
+    # Train on first 70% of data only — standalone path has no labels for normal-only filtering.
     model.fit(X_train[: int(len(X_train) * 0.7)])
 
     raw_train = -model.decision_function(X_train)

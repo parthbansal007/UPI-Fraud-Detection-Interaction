@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import torch
 import xgboost as xgb
 from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score
 
@@ -104,36 +105,53 @@ def train_optimized_xgboost(config: dict[str, Any] | None = None) -> dict[str, A
     best_params: dict[str, Any] | None = None
     best_val_precision = -1.0
     best_val_recall = -1.0
+    prefer_gpu = bool(torch.cuda.is_available())
 
     for max_depth, learning_rate, n_estimators in product(
         cfg.max_depth_grid,
         cfg.learning_rate_grid,
         cfg.n_estimators_grid,
     ):
-        model = xgb.XGBClassifier(
-            objective="multi:softprob",
-            num_class=3,
-            eval_metric="mlogloss",
-            random_state=cfg.random_state,
-            tree_method="hist",
+        xgb_kwargs: dict[str, Any] = {
+            "objective": "multi:softprob",
+            "num_class": 3,
+            "eval_metric": "mlogloss",
+            "random_state": cfg.random_state,
+            "tree_method": "hist",
+            "reg_alpha": 0.1,
+            "reg_lambda": 1.0,
+            "gamma": 0.1,
+            "n_jobs": cfg.n_jobs,
+            "max_depth": int(max_depth),
+            "learning_rate": float(learning_rate),
+            "n_estimators": int(n_estimators),
+            "early_stopping_rounds": cfg.early_stopping_rounds,
+        }
+        if prefer_gpu:
+            xgb_kwargs["device"] = "cuda"
 
-            reg_alpha=0.1,
-            reg_lambda=1.0,
-            gamma=0.1,
-
-            n_jobs=cfg.n_jobs,
-            max_depth=int(max_depth),
-            learning_rate=float(learning_rate),
-            n_estimators=int(n_estimators),
-            early_stopping_rounds=cfg.early_stopping_rounds,
-        )
-        model.fit(
-            X_train,
-            y_train,
-            sample_weight=train_weights,
-            eval_set=[(X_val, y_val)],
-            verbose=False,
-        )
+        model = xgb.XGBClassifier(**xgb_kwargs)
+        try:
+            model.fit(
+                X_train,
+                y_train,
+                sample_weight=train_weights,
+                eval_set=[(X_val, y_val)],
+                verbose=False,
+            )
+        except xgb.core.XGBoostError:
+            if not prefer_gpu:
+                raise
+            prefer_gpu = False
+            xgb_kwargs.pop("device", None)
+            model = xgb.XGBClassifier(**xgb_kwargs)
+            model.fit(
+                X_train,
+                y_train,
+                sample_weight=train_weights,
+                eval_set=[(X_val, y_val)],
+                verbose=False,
+            )
 
         val_pred = model.predict(X_val)
         val_metrics = _metrics_payload(y_val, val_pred)

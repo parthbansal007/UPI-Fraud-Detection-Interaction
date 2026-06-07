@@ -1,7 +1,7 @@
 {
   "onnx_exported": true,
   "available": true,
-  "onnx_path": "C:\\Users\\Parth\\Documents\\UPI Fraud Detection\\models\\interaction\\onnx\\transformer_classifier.onnx",
-  "avg_latency_ms": 40.81497666775249,
+  "onnx_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\interaction\\onnx\\transformer_classifier.onnx",
+  "avg_latency_ms": 95.30390300002182,
   "target_met_lt_200ms": true
 }

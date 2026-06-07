@@ -106,7 +106,7 @@ def _build_parser() -> argparse.ArgumentParser:
     transformer_parser.add_argument("--model-dir", type=Path, default=Path("models/interaction/transformer"))
     transformer_parser.add_argument("--output-dir", type=Path, default=Path("outputs/interaction"))
     transformer_parser.add_argument("--seed", type=int, default=42)
-    transformer_parser.add_argument("--model-name", type=str, default="distilroberta-base")
+    transformer_parser.add_argument("--model-name", type=str, default="distilbert-base-uncased")
     transformer_parser.add_argument("--learning-rate", type=float, default=2e-5)
     transformer_parser.add_argument("--tokenization-batch-size", type=int, default=256)
     transformer_parser.add_argument("--early-stopping-patience", type=int, default=2)

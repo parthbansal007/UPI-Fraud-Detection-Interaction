@@ -4,11 +4,11 @@
     "raw_data_path": "interaction_data\\dataset_v2.csv",
     "encoded_data_path": "interaction_data\\dataset_encoded_v2.csv",
     "artifact_dir": "models\\interaction",
-    "transformer_model_name": "microsoft/deberta-v3-base",
+    "transformer_model_name": "distilbert-base-uncased",
     "fallback_transformer_model_name": "distilbert-base-uncased",
     "max_length": 96,
-    "train_batch_size": 4,
-    "eval_batch_size": 8,
+    "train_batch_size": 16,
+    "eval_batch_size": 32,
     "transformer_epochs": 4.0,
     "transformer_learning_rates": [
       2e-05,
@@ -60,80 +60,80 @@
     "malicious"
   ],
   "thresholds": {
-    "malicious_threshold": 0.45,
-    "suspicious_threshold": 0.41000000000000003
+    "malicious_threshold": 0.53,
+    "suspicious_threshold": 0.45
   },
   "validation_metrics": {
-    "accuracy": 0.6286666666666667,
+    "accuracy": 0.6373333333333333,
     "precision_by_class": {
-      "normal": 0.7649700598802395,
-      "suspicious": 0.4713656387665198,
-      "malicious": 0.7350993377483444
+      "normal": 0.7931034482758621,
+      "suspicious": 0.4667651403249631,
+      "malicious": 0.7115384615384616
     },
     "recall_by_class": {
-      "normal": 0.6952380952380952,
-      "suspicious": 0.6701461377870563,
+      "normal": 0.7197278911564626,
+      "suspicious": 0.6597077244258872,
       "malicious": 0.3881118881118881
     },
     "f1_by_class": {
-      "normal": 0.7284390591589451,
-      "suspicious": 0.553448275862069,
-      "malicious": 0.5080091533180778
+      "normal": 0.7546362339514978,
+      "suspicious": 0.5467128027681661,
+      "malicious": 0.502262443438914
     },
-    "malicious_precision": 0.7350993377483444,
+    "malicious_precision": 0.7115384615384616,
     "malicious_recall": 0.3881118881118881,
     "confusion_matrix": [
       [
-        511,
-        217,
-        7
+        529,
+        203,
+        3
       ],
       [
-        125,
-        321,
-        33
+        121,
+        316,
+        42
       ],
       [
-        32,
-        143,
+        17,
+        158,
         111
       ]
     ]
   },
   "test_ood_metrics": {
-    "accuracy": 0.7133333333333334,
+    "accuracy": 0.7193333333333334,
     "precision_by_class": {
-      "normal": 0.8315539739027283,
-      "suspicious": 0.4717391304347826,
-      "malicious": 0.7715736040609137
+      "normal": 0.8412887828162291,
+      "suspicious": 0.4789915966386555,
+      "malicious": 0.7849462365591398
     },
     "recall_by_class": {
-      "normal": 0.8038990825688074,
-      "suspicious": 0.5710526315789474,
-      "malicious": 0.6129032258064516
+      "normal": 0.8084862385321101,
+      "suspicious": 0.6,
+      "malicious": 0.5887096774193549
     },
     "f1_by_class": {
-      "normal": 0.8174927113702624,
-      "suspicious": 0.5166666666666667,
-      "malicious": 0.6831460674157304
+      "normal": 0.8245614035087719,
+      "suspicious": 0.5327102803738317,
+      "malicious": 0.6728110599078341
     },
-    "malicious_precision": 0.7715736040609137,
-    "malicious_recall": 0.6129032258064516,
+    "malicious_precision": 0.7849462365591398,
+    "malicious_recall": 0.5887096774193549,
     "confusion_matrix": [
       [
-        701,
-        166,
-        5
+        705,
+        163,
+        4
       ],
       [
-        123,
-        217,
-        40
+        116,
+        228,
+        36
       ],
       [
-        19,
-        77,
-        152
+        17,
+        85,
+        146
       ]
     ]
   },

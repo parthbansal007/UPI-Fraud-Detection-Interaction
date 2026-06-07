@@ -225,7 +225,7 @@ class PipelineConfig:
     raw_data_path: Path = Path("interaction_data/dataset_v2.csv")
     encoded_data_path: Path = Path("interaction_data/dataset_encoded_v2.csv")
     artifact_dir: Path = Path("models/interaction")
-    transformer_model_name: str = "microsoft/deberta-v3-base"
+    transformer_model_name: str = "distilbert-base-uncased"
     fallback_transformer_model_name: str = "distilbert-base-uncased"
     max_length: int = 96
     train_batch_size: int = 16
@@ -708,6 +708,10 @@ class HybridFraudDetector:
                 kwargs["evaluation_strategy"] = "epoch"
             if "eval_strategy" in arg_names:
                 kwargs["eval_strategy"] = "epoch"
+            # DeBERTa-v3 is numerically unstable with fp16; bf16 on Ampere+ is stable.
+            if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+                kwargs["bf16"] = True
+            kwargs["max_grad_norm"] = 0.5
             training_args = TrainingArguments(**kwargs)
             trainer = WeightedLossTrainer(
                 class_weights=weight_tensor,
@@ -723,7 +727,7 @@ class HybridFraudDetector:
             metric_value = float(eval_metrics.get("eval_malicious_precision", 0.0))
             if metric_value > best_metric:
                 best_metric = metric_value
-                best_state = model.state_dict()
+                best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
 
         if best_state is None:
             raise RuntimeError("Transformer training did not produce a valid state.")
