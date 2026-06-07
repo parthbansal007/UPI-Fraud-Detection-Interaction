@@ -281,6 +281,23 @@ Key observations:
 
 *Precision / Recall / F1 comparison across all three classes. The malicious class leads on precision (78.5%); suspicious recall (60%) provides broad fraud coverage.*
 
+#### Sub-Component Comparison: XGBoost Standalone vs. Full Hybrid Ensemble
+
+Adding the DistilBERT transformer and IsolationForest components on top of XGBoost improves precision on the critical malicious class:
+
+| Component | Malicious Precision | Malicious Recall | Malicious F1 | Accuracy |
+|-----------|--------------------:|-----------------|-------------|----------|
+| XGBoost Standalone | 72.3% | 58.9% | 64.9% | 71.1% |
+| **Hybrid Ensemble** | **78.5%** | **58.9%** | **67.3%** | **71.9%** |
+
+![Sub-Component Comparison](outputs/interaction/evaluation_graphs/subcomponent_comparison.png)
+
+*Per-class Precision / Recall / F1: XGBoost Standalone vs. Full Hybrid Ensemble. Annotated deltas show where the transformer and IsoForest components add value.*
+
+![Ensemble vs XGBoost Uplift](outputs/interaction/evaluation_graphs/ensemble_vs_xgboost.png)
+
+*Summary uplift chart. The ensemble lifts malicious precision by +6.2 pp (72.3% → 78.5%) and overall accuracy by +0.8 pp, with recall held constant — demonstrating the transformer component increases precision without sacrificing coverage.*
+
 #### Validation Metrics (for reference)
 
 | Metric | Validation |
@@ -452,6 +469,11 @@ All graphs are generated automatically during evaluation. Paths are relative to 
 ![Threshold Tradeoff](outputs/interaction/evaluation_graphs/malicious_threshold_tradeoff.png)
 
 *Precision / Recall / F1 sweep over the malicious decision threshold. Selected operating point: 0.53.*
+
+| | |
+|---|---|
+| ![Sub-Component Comparison](outputs/interaction/evaluation_graphs/subcomponent_comparison.png) | ![Ensemble Uplift](outputs/interaction/evaluation_graphs/ensemble_vs_xgboost.png) |
+| *Per-class P/R/F1: XGBoost standalone vs. Hybrid Ensemble* | *Malicious precision/recall/F1 uplift from the full ensemble* |
 
 ### Interaction SHAP (`outputs/interaction/`)
 
