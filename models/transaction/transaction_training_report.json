@@ -1,0 +1,42 @@
+{
+  "status": "trained",
+  "data_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\transaction_data\\upi_transactions_2024.csv",
+  "model_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\transaction",
+  "docs_dir": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\docs\\transaction",
+  "thresholds": {
+    "logistic": 0.8441256163326278,
+    "rf": 0.3230800439856432,
+    "xgboost": 0.18119949102401733
+  },
+  "results": {
+    "logistic": {
+      "precision": 0.0024630541871921183,
+      "recall": 0.03125,
+      "f1": 0.0045662100456621,
+      "f2": 0.009363295880149813,
+      "pr_auc": 0.001804612030844675,
+      "roc_auc": 0.4572491684033344
+    },
+    "rf": {
+      "precision": 0.0014326647564469914,
+      "recall": 0.03125,
+      "f1": 0.0027397260273972603,
+      "f2": 0.006053268765133172,
+      "pr_auc": 0.002120651932309747,
+      "roc_auc": 0.5026584375333975
+    },
+    "xgboost": {
+      "precision": 0.0031821797931583136,
+      "recall": 0.041666666666666664,
+      "f1": 0.005912786400591279,
+      "f2": 0.01218769043266301,
+      "pr_auc": 0.001995938735047809,
+      "roc_auc": 0.4724434455821845
+    }
+  },
+  "artifacts": {
+    "thresholds_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\transaction\\transaction_thresholds.json",
+    "preprocessing_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\transaction\\transaction_preprocessing_artifacts.joblib",
+    "training_report_path": "F:\\Py_Computer_Project\\Special_Projects\\UPI_Fraud_Detection\\UPI-Fraud-Detection-Interaction\\models\\transaction\\transaction_training_report.json"
+  }
+}

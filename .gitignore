@@ -57,3 +57,10 @@ notebooks/**/.ipynb_checkpoints/
 .local/
 .DS_Store
 Thumbs.db
+
+# Claude Code local config (agents, commands, rules, skills, settings)
+.claude/
+.claudeignore
+claude.md
+
+upi_transactions_2024.csv

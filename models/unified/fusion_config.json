@@ -1,8 +1,8 @@
-﻿{
+{
   "interaction_weight": 0.55,
   "transaction_weight": 0.45,
   "high_threshold": 0.7,
   "medium_threshold": 0.4,
-  "interaction_model_dir": "models/interaction",
-  "transaction_model_dir": "models/transaction"
+  "interaction_model_dir": "models\\interaction",
+  "transaction_model_dir": "models\\transaction"
 }
